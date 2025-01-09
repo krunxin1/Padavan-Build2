@@ -26,9 +26,9 @@ jobs:
       matrix:
         include:
           - build_variant: "mt7621"
-            targets: "K2P"
+            targets: "MI-R3P"
           - build_variant: "mt7621"
-            targets: "R2100"
+            targets: "MI-R3P"
     steps:
       - name: Checkout main            # 导入主分支
         uses: actions/checkout@v2
@@ -57,13 +57,13 @@ jobs:
           cd $config_dir
           for m in $targets; do if [ -f $m.config ]; then \
           ##科学上网##
-          echo "CONFIG_FIRMWARE_INCLUDE_SHADOWSOCKS=n" >> $m.config #科学上网插件，选择n后全部有关插件都不集成
-          echo "CONFIG_FIRMWARE_INCLUDE_XRAY=n" >> $m.config #集成xray执行文件  ~4.5M
+          echo "CONFIG_FIRMWARE_INCLUDE_SHADOWSOCKS=y" >> $m.config #科学上网插件，选择n后全部有关插件都不集成
+          echo "CONFIG_FIRMWARE_INCLUDE_XRAY=y" >> $m.config #集成xray执行文件  ~4.5M
           echo "CONFIG_FIRMWARE_INCLUDE_V2RAY=n" >> $m.config #集成v2ray执行文件
-          echo "CONFIG_FIRMWARE_INCLUDE_TROJAN=n" >> $m.config #集成trojan执行文件  ~1.2M
-          echo "CONFIG_FIRMWARE_INCLUDE_SSOBFS=n" >> $m.config #simple-obfs混淆插件
+          echo "CONFIG_FIRMWARE_INCLUDE_TROJAN=y" >> $m.config #集成trojan执行文件  ~1.2M
+          echo "CONFIG_FIRMWARE_INCLUDE_SSOBFS=y" >> $m.config #simple-obfs混淆插件
           ##广告管理##
-          echo "CONFIG_FIRMWARE_INCLUDE_ADBYBY=n" >> $m.config #adbyby plus+
+          echo "CONFIG_FIRMWARE_INCLUDE_ADBYBY=Y" >> $m.config #adbyby plus+
           ##DNS服务##
           echo "CONFIG_FIRMWARE_INCLUDE_SMARTDNS=n" >> $m.config #smartdns
           echo "CONFIG_FIRMWARE_INCLUDE_ADGUARDHOME=n" >> $m.config #adg DNS去AD
@@ -92,7 +92,7 @@ jobs:
           ./clear_tree_simple >/dev/null 2>&1; done
       - name: Upload images to Artifact
         if: ${{ success() }}
-        uses: actions/upload-artifact@v2.2.1
+        uses: actions/upload-artifact@v4
         with:
           name: MeIsReallyBa_4.4_${{ env.build_variant }}
           path: ${{ env.images_dir }}
